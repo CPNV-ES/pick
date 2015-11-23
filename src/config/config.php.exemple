@@ -1,0 +1,18 @@
+<?php
+
+// MYSQL information
+//------------------
+define ('MYSQLHOST',	"");		// ServerName
+define ('MYSQLUSER',	"");			// UserName
+define ('MYSQLPWD',		"");				// UserPassword
+define ('DATABASE',		"");		// DBName
+////////////////////////////////////////
+
+
+// TheDBMovie CONST
+//-----------------
+define ('THEDBMOVIEKEY',	"");		// TheDBMovie api key
+////////////////////////////////////////
+
+
+?>

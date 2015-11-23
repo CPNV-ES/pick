@@ -1,11 +1,3 @@
-<?php
-
-// require of PHP file
-//--------------------
-require_once("./src/includes/functions.inc.php");
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>

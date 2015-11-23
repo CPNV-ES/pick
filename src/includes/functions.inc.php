@@ -1,4 +1,5 @@
 <?php
+require("../config/config.php");
 
 set_time_limit(240);
 
@@ -175,7 +176,7 @@ function SearchAndInsert($aFile)
 
     // Connection to DB
     //-----------------
-    $oMyDB = new PDO('mysql:host=127.0.0.1;dbname=my_movies', 'root', '');
+    $oMyDB = new PDO('mysql:host='.MYSQLHOST.';dbname='.DATABASE, MYSQLUSER, MYSQLPWD);
     $oMyDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     //////////////////////////////////////////////////////////////
 
@@ -190,7 +191,7 @@ function SearchAndInsert($aFile)
 
         // Try to find the film in themoviedb's DB
         //----------------------------------------
-        $aDataText = file_get_contents("http://api.themoviedb.org/3/search/movie?api_key=db663b344723dd2d6781aed1e2f7764d&query=".$aFichier[0]);
+        $aDataText = file_get_contents("http://api.themoviedb.org/3/search/movie?api_key=".THEDBMOVIEKEY."&query=".$aFichier[0]);
 
 
         // Return JSON. Must decode
@@ -205,14 +206,14 @@ function SearchAndInsert($aFile)
 
             // Get credit info from movie
             //----------------------------
-            $aDataText 			= file_get_contents("http://api.themoviedb.org/3/movie/".$aDataJsonMovie->results[0]->id."/credits?api_key=db663b344723dd2d6781aed1e2f7764d");
+            $aDataText 			= file_get_contents("http://api.themoviedb.org/3/movie/".$aDataJsonMovie->results[0]->id."/credits?api_key=".THEDBMOVIEKEY);
             $aDataJsonCredit 	= json_decode($aDataText);
             //////////////////////////////
 
 
             // Get general info from movie
             //----------------------------
-            $aDataText 			= file_get_contents("http://api.themoviedb.org/3/movie/".$aDataJsonMovie->results[0]->id."?api_key=db663b344723dd2d6781aed1e2f7764d");
+            $aDataText 			= file_get_contents("http://api.themoviedb.org/3/movie/".$aDataJsonMovie->results[0]->id."?api_key=".THEDBMOVIEKEY);
             $aDataJsonMovie 	= json_decode($aDataText);
             //////////////////////////////
 
@@ -713,7 +714,7 @@ function AddUnCorrectMovie($aFileNotFound)
 
     // Connection to DB
     //-----------------
-    $oMyDB = new PDO('mysql:host=127.0.0.1;dbname=my_movies', 'root', '');
+    $oMyDB = new PDO('mysql:host='.MYSQLHOST.';dbname='.DATABASE, MYSQLUSER, MYSQLPWD);
     $oMyDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     //////////////////////////////////////////////////////////////
 
@@ -766,7 +767,7 @@ function GetNumberUnCorrectMovie()
 
     // Connection to DB
     //-----------------
-    $oMyDB = new PDO('mysql:host=127.0.0.1;dbname=my_movies', 'root', '');
+    $oMyDB = new PDO('mysql:host='.MYSQLHOST.';dbname='.DATABASE, MYSQLUSER, MYSQLPWD);
     $oMyDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     //////////////////////////////////////////////////////////////
 
@@ -800,7 +801,7 @@ function GetUnCorrectMovie()
 
     // Connection to DB
     //-----------------
-    $oMyDB = new PDO('mysql:host=127.0.0.1;dbname=my_movies', 'root', '');
+    $oMyDB = new PDO('mysql:host='.MYSQLHOST.';dbname='.DATABASE, MYSQLUSER, MYSQLPWD);
     $oMyDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     //////////////////////////////////////////////////////////////
 
@@ -847,7 +848,7 @@ function GetFilmDescription($idMovie)
 
     // Connection to DB
     //-----------------
-    $oMyDB = new PDO('mysql:host=127.0.0.1;dbname=my_movies', 'root', '');
+    $oMyDB = new PDO('mysql:host='.MYSQLHOST.';dbname='.DATABASE, MYSQLUSER, MYSQLPWD);
     $oMyDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     //////////////////////////////////////////////////////////////
 
@@ -1022,7 +1023,7 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
     // Connection to DB
     //-----------------
-    $oMyDB = new PDO('mysql:host=127.0.0.1;dbname=my_movies', 'root', '');
+    $oMyDB = new PDO('mysql:host='.MYSQLHOST.';dbname='.DATABASE, MYSQLUSER, MYSQLPWD);
     $oMyDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     //////////////////////////////////////////////////////////////
 
