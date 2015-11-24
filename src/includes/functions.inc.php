@@ -17,7 +17,7 @@ function dirToArray($sDir)
     // Define character to replace in a array
     //---------------------------------------
     $aReplace2 = array (
-        "zone-telechargement.com",
+        "zone+telechargement+com",
         "-",
         "^",
         "_",
@@ -65,12 +65,13 @@ function dirToArray($sDir)
         "cpasbien.pw",
         "h264",
         "mhd",
-        " fr ",
-        " bd ",
-        " br ",
+        "+fr+",
+        "+fr",
+        "+bd+",
+        "+br+",
         "qcp",
-        "cpasbien.pe",
-        "cpasbien.me",
+        "cpasbien+pe",
+        "cpasbien+me",
         "aymo",
         "unrated",
         "torrent411",
@@ -78,22 +79,33 @@ function dirToArray($sDir)
         "thx",
         "dvdrip",
         "truefrench",
+        "trufrench",
         "downparadise",
         "subforced",
         "xvid",
-        "xvidfr"
+        "xvidfr",
+        "mega.film",
+        "upbytybbow",
+        "+ws+",
+        "+tf+",
+        "$",
+        "cd1",
+        "cd2",
+        "wiz",
+        "lazouzie",
+        "uls",
+        "r5"
+
+
     );
 
-
-    $aReplace = array (
-    			".",
+	    $aEscape = array (
     			"_",
     			"-",
-    			" ",
+    			" "
 
 	);
     ////////////////////////////////////////////
-
 
 
     // Browse the array of path
@@ -109,7 +121,7 @@ function dirToArray($sDir)
             {
 
                 // Doesn't go in directory that contains (saison or season)
-                //--------------------------------------------------------
+                //------------------------------- -------------------------
                 if(!preg_match_all("#(saison|season)#i", $sValue))
                 {
                     $aResult[$sValue] = dirToArray($sDir . DIRECTORY_SEPARATOR . $sValue);
@@ -125,28 +137,48 @@ function dirToArray($sDir)
                 $sPath = str_replace("\\\\", "\\", $sPath);
 				/////////////////////////////////
 
-                preg_match('/^(\[.*\])?[_\.\s]?(([a-zA-Z0-9éèàë]{1,})([_\.\s\-]([A-Z]?([a-zéèàë&]{1,}|[IMVX]{1,})?|(?!(19|20|21)[0-9]{2})[0-9]{1,}|\%\![0-9]{1,}))*)([_\.\s]((\(?([0-9]){4}\)?|[A-Z]{4,}|(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})[\s-]*(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})?).*))?\.(avi|mp4|mov|mpg|mpa|wma)$/', utf8_encode($sValue), $matches);
+
+				// Replace all content of aEscape by . for better preg_match
+				//----------------------------------------------------------
+				$sValue = str_replace($aEscape, ".", $sValue);
 
 
-				// Si preg_match ne trouve rien
-				//-----------------------------
+				// First preg_match
+				//-----------------
+                preg_match('/^(\[.*\])?[_\.\s]?(([a-zA-Z0-9éèàë]{1,})([_\.\s\-]([A-Z]?([a-zéèàë&]{1,}|[IMVX]{1,})?|(?!(19|20|21)[0-9]{2})[0-9]{1,}|\%\![0-9]{1,}))*)([_\.\s]((\(?([0-9]){4}\)?|[A-Z]{4,}|(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})[\s-]*(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})?).*))?\.(avi|mp4|mov|mpg|mpa|wma)$/', $sValue, $matches);
+
+
+				// if first preg_match doesn't work
+				//---------------------------------
 				if(!isset($matches[2]))
 				{
 
-					// REFAIRE REGEXP OU AUTRE MANIERE
-					$sValueParse = str_ireplace($aReplace2, " ", $sValue);
+					// Do seconde preg_match
+					//----------------------
+					preg_match('/^(\[.*\])?((([a-zA-Z0-9éèàêô&]{1,})[\_\s\.\-]){1,})(\[.*\]).*$/', $sValue, $matches2);
+
+
+					// Put all in same variable
+					//-------------------------
+					if(!isset($matches2[2]))
+					{
+						$sValueParse = $sValue;
+					}
+					else
+					{
+						$sValueParse = $matches2[2];
+					}
+
 				}
 				else
 				{
-
-					// RESULTAT DE JOHN
 					$sValueParse = $matches[2];
 				}
 
 
                 // Encode for correct visibility
                 //------------------------------
-                $sFichierTemp   = str_ireplace($aReplace, "+", utf8_encode($sValueParse));
+                $sFichierTemp   = str_ireplace($aReplace2, "+", utf8_encode($sValueParse));
 
 
                 // Insert films with source name
@@ -164,11 +196,6 @@ function dirToArray($sDir)
 
 function SearchAndInsert($aFile)
 {
-
-
-
-
-
     // Set variable
     //-------------
     $aFileNotFound = "";
@@ -809,7 +836,8 @@ function GetUnCorrectMovie()
     // Select all uncorrect movies
     //----------------------------
     $sQuery 	= " SELECT
-					filename_correct
+					filename_correct,
+					filename_source
 				FROM
 					corrects";
 
@@ -824,6 +852,7 @@ function GetUnCorrectMovie()
         $aData = [];
 
         $aData['filename_correct'] = $row['filename_correct'];
+		$aData['filename_source'] = $row['filename_source'];
         $aResult[$i] = $aData;
 
         $i ++;
