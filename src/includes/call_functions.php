@@ -150,43 +150,55 @@ switch($_GET['todo'])
 		break;
 
 
-case 'searchMovies':
+    case 'searchMovies':
 
-	$aMovie = GetSearchMovies($_GET['queryT'], $_GET['queryA'], $_GET['queryG'], $_GET['queryY']);
-    $sPrint = "";
+        $aMovie = GetSearchMovies($_GET['queryT'], $_GET['queryA'], $_GET['queryG'], $_GET['queryY']);
+        $sPrint = "";
 
-	if(count($aMovie) == 0 && ($_GET['queryT'] != "" || $_GET['queryA'] != "" || $_GET['queryG'] != "" || $_GET['queryY'] != ""))
-	{
-		$sPrint = "Aucun film trouvé";
-	}
-	else if(count($aMovie) == 0 && $_GET['queryT'] == "" && $_GET['queryA'] == "" && $_GET['queryG'] == "" && $_GET['queryY'] == "")
-	{
-		$aMovie = GetAllMovies();
-	}
-	foreach ($aMovie as $row)
-	    {
-	        $sPrint .= "
-			<div class='col-lg-3 col-centered pado'>
-	            <div class='cuadro_intro_hover' style='background-color:#cccccc;'>
-	                <p style='text-align:center;'>
-	                    <img src='https://image.tmdb.org/t/p/w185".$row['poster_path']."' class='img-responsive' alt=''>
+        if(count($aMovie) == 0 && ($_GET['queryT'] != "" || $_GET['queryA'] != "" || $_GET['queryG'] != "" || $_GET['queryY'] != ""))
+        {
+            $sPrint = "Aucun film trouvé";
+        }
+        else if(count($aMovie) == 0 && $_GET['queryT'] == "" && $_GET['queryA'] == "" && $_GET['queryG'] == "" && $_GET['queryY'] == "")
+        {
+            $aMovie = GetAllMovies();
+        }
+        foreach ($aMovie as $row)
+            {
+                $sPrint .= "
+                <div class='col-lg-3 col-centered pado'>
+                    <div class='cuadro_intro_hover' style='background-color:#cccccc;'>
+                        <p style='text-align:center;'>
+                            <img src='https://image.tmdb.org/t/p/w185".$row['poster_path']."' class='img-responsive' alt=''>
 
-	                </p>
-	                <div class='caption'>
-	                    <div class='blur'></div>
-	                    <div class='caption-text'>
-	                        <h3>".$row['title']."</h3>
-	                        <p>".$row['genre']."</p>
-	                        <button id='detailfilm' value='".$row['id']."'>+</button>
-	                    </div>
-	                </div>
-	            </div>
-	         </div>
-		";
-		}
-		print($sPrint);
+                        </p>
+                        <div class='caption'>
+                            <div class='blur'></div>
+                            <div class='caption-text'>
+                                <h3>".$row['title']."</h3>
+                                <p>".$row['genre']."</p>
+                                <button id='detailfilm' value='".$row['id']."'>+</button>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            ";
+            }
+            print($sPrint);
 
-	break;
+        break;
+
+    case 'getallgenres':
+
+        $aGenre = GetAllGenres();
+        $sPrint = "<input class=\"form-control\" list=\"chose_genre\" type=\"search\" id=\"g\" name=\"g\"><datalist id=\"chose_genre\">";
+        foreach($aGenre AS $val)
+        {
+            $sPrint.= "<option value=".$val."/>";
+        }
+        $sPrint .= "</datalist>";
+        print($sPrint);
+        break;
 
 }
 

@@ -115,7 +115,8 @@
                     <form class="fplus"role="form">
                         <div class="form-group">
                             <input type="search" class="form-control" id="y" name="y" placeholder="By year">
-                            <input type="search" class="form-control" id="g" name="g" placeholder="By genre">
+                            <span id="genre"></span>
+                            <!--<input type="search" class="form-control" id="g" name="g" placeholder="By genre">-->
                             <input type="search" class="form-control" id="a" name="a" placeholder="By actors">
                             <input id="cn" name="cn" type="hidden" value="false" />
                         </div>

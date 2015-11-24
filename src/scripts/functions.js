@@ -4,6 +4,7 @@ $(document).ready(function()
     // Display all movies in DB
     //-------------------------
     $('#list').load("./src/includes/call_functions.php?todo=getallmovies");
+    $('#genre').load("./src/includes/call_functions.php?todo=getallgenres");
 
 
     // Get click and launch scan

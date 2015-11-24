@@ -165,10 +165,6 @@ function dirToArray($sDir)
 function SearchAndInsert($aFile)
 {
 
-
-
-
-
     // Set variable
     //-------------
     $aFileNotFound = "";
@@ -1249,6 +1245,40 @@ function GetSearchMovies($title, $actor, $genre, $year)
 		return GetSomeMovies($aIdMovies);
 	}
 }
+
+function GetAllGenres()
+{
+
+    // Set variable
+    //-------------
+    $aGenre = [];
+    $i = 0;
+    ///////////////
+
+    // Connection to DB
+    //-----------------
+    $oMyDB = new PDO('mysql:host='.MYSQLHOST.';dbname='.DATABASE, MYSQLUSER, MYSQLPWD);
+    $oMyDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //////////////////////////////////////////////////////////////
+
+    $sQuery = "
+	SELECT
+		genre
+	FROM
+		genres
+	";
+
+    $oResponse = ExecuteQuerie($oMyDB, $sQuery, "SELECT");
+
+    while ($aDataG = $oResponse->fetch())
+    {
+        $aGenre[$i] = $aDataG['genre'];
+        $i++;
+    }
+
+    return $aGenre;
+}
+
 
 
 // ----------------------------------
