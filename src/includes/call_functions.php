@@ -51,9 +51,10 @@ switch($_GET['todo'])
     case 'moviesnotfound':
 
         $aNbMoviesNotFound = GetNumberUnCorrectMovie();
-
-        print("You have ".$aNbMoviesNotFound['NbMoviesNotFound']." movie(s) who doesn't match");
-
+        if($aNbMoviesNotFound['NbMoviesNotFound'] != 0)
+        {
+            print("You have ".$aNbMoviesNotFound['NbMoviesNotFound']." movie(s) who doesn't match");
+        }
         break;
 
 
