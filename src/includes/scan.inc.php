@@ -491,13 +491,13 @@ id_producer = "' . $iProducer . '"';
 						// Check if director is already in DB
 						//-----------------------------------
 						$sQuerie = 'SELECT
-id_director
-FROM
-directors
-WHERE
-name = "' . $aFirstName[1] . '"
-AND
-firstname = "' . $aFirstName[0] . '"';
+										id_director
+									FROM
+										directors
+									WHERE
+										name = "' . $aFirstName[1] . '"
+									AND
+										firstname = "' . $aFirstName[0] . '"';
 
 						$oResponse = ExecuteQuerie($oMyDB, $sQuerie, 'SELECT');
 						$aDataDirector = $oResponse -> fetch();
@@ -512,10 +512,10 @@ firstname = "' . $aFirstName[0] . '"';
 							// Insert IN DB
 							//-------------
 							$sQuerie = 'INSERT INTO
-directors
-SET
-name		= "' . $aFirstName[1] . '",
-firstname	= "' . $aFirstName[0] . '"';
+											directors
+										SET
+											name		= "' . $aFirstName[1] . '",
+											firstname	= "' . $aFirstName[0] . '"';
 
 							ExecuteQuerie($oMyDB, $sQuerie, 'INSERT');
 							////////////////////////////////////////////
@@ -528,14 +528,14 @@ firstname	= "' . $aFirstName[0] . '"';
 						// If already exist
 						//-----------------
 						$sQuerie = 'SELECT
-id_movie,
-id_director
-FROM
-movie_directors
-WHERE
-id_movie = "' . $iMovie . '"
-AND
-id_director = "' . $iDirector . '"';
+										id_movie,
+										id_director
+									FROM
+										movie_directors
+									WHERE
+										id_movie = "' . $iMovie . '"
+									AND
+										id_director = "' . $iDirector . '"';
 
 						$oResponse = ExecuteQuerie($oMyDB, $sQuerie, 'SELECT');
 						$aDataMovieDirector = $oResponse -> fetch();
@@ -548,10 +548,10 @@ id_director = "' . $iDirector . '"';
 							// Insert to the movie the director of it
 							//---------------------------------------
 							$sQuerie = 'INSERT INTO
-movie_directors
-SET
-id_movie		= "' . $iMovie . '",
-id_director		= "' . $iDirector . '"';
+											movie_directors
+										SET
+											id_movie		= "' . $iMovie . '",
+											id_director		= "' . $iDirector . '"';
 
 							ExecuteQuerie($oMyDB, $sQuerie, 'INSERT');
 							////////////////////////////////////////////

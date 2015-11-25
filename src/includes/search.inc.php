@@ -114,7 +114,8 @@ function GetUnCorrectMovie()
     // Select all uncorrect movies
     //----------------------------
     $sQuery 	= " SELECT
-					filename_correct
+					filename_correct,
+					filename_source
 				FROM
 					corrects";
 
@@ -129,6 +130,7 @@ function GetUnCorrectMovie()
         $aData = [];
 
         $aData['filename_correct'] = $row['filename_correct'];
+		$aData['filename_source']	= $row['filename_source'];
         $aResult[$i] = $aData;
 
         $i ++;
