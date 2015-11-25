@@ -10,12 +10,13 @@ switch($_GET['todo'])
 {
     case 'scan':
 
-		// Successive function to scan and display movies
-		//-----------------------------------------------
-        $aMovieFromDisk = dirToArray(USERFOLDER);
+        $aMovieFromDisk = dirToArray('/xampp/htdocs/sweg/Video_light/');
         $aMovieNotFound = SearchAndInsert($aMovieFromDisk);
+
+        // print($aMovieNotFound);
+
         AddUnCorrectMovie($aMovieNotFound);
-		//////////////////////////////////////////////////
+
 
 
         // Call function to get film and print it
@@ -27,7 +28,7 @@ switch($_GET['todo'])
         {
 
             $sPrint .= "
-			<div class='col-xs-3 col-md-3 col-sm-3 col-centered pado'>
+			<div class='col-lg-3 col-centered pado'>
                 <div class='cuadro_intro_hover' style='background-color:#cccccc;'>
                     <p style='text-align:center;'>
                         <img src='https://image.tmdb.org/t/p/w185".$row['poster_path']."' class='img-responsive' alt=''>
@@ -73,7 +74,7 @@ switch($_GET['todo'])
 
         foreach($aUnCorrectMovies as $sMovies)
         {
-            $sPrint .="<div class='form-group'><input type='text' class='form-control' placeholder='".$sMovies['filename_source']."'></div>";
+            $sPrint .="<div class='form-group'><input type='text' class='form-control' placeholder='".$sMovies['filename_correct']."' value='".$sMovies['filename_correct']."'></div>";
         }
 
 		$sPrint .= '
@@ -134,7 +135,7 @@ switch($_GET['todo'])
         {
 
             $sPrint .= "
-			<div class='col-xs-3 col-md-3 col-sm-3 col-centered pado'>
+			<div class='col-lg-3 col-centered pado'>
                 <div class='cuadro_intro_hover' style='background-color:#cccccc;'>
                     <p style='text-align:center;'>
                         <img src='https://image.tmdb.org/t/p/w185".$row['poster_path']."' class='img-responsive' alt=''>
