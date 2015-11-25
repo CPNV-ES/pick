@@ -4,7 +4,16 @@ $(document).ready(function()
     // Display all movies in DB
     //-------------------------
     $('#list').load("./src/includes/call_functions.php?todo=getallmovies");
+    $('#genre').load("./src/includes/call_functions.php?todo=getallgenres");
 
+    $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound", function(e)
+    {
+        if (e != '')
+        {
+            $('#notfound').text(e);
+            $('#correct_string').show();
+        }
+    });
 
     // Get click and launch scan
     //--------------------------
@@ -34,9 +43,16 @@ $(document).ready(function()
             $('#correct_string').show();
 
 
-            // Display number of movies not found
+            // Display number of movies not found if there is not found movies
             //-----------------------------------
-            $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound");
+            $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound", function(e)
+            {
+                if (e != '')
+                {
+                    $('#notfound').text(e);
+                    $('#correct_string').show();
+                }
+            });
 
         });
     });
