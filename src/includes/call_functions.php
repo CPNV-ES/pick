@@ -1,5 +1,10 @@
 <?php
-include("./functions.inc.php");
+//include("./functions.inc.php");
+include("../config/config.php");
+foreach(glob('./*.inc.php') as $fileName)
+{
+    include_once $fileName;
+}
 
 switch($_GET['todo'])
 {
@@ -54,6 +59,10 @@ switch($_GET['todo'])
         if($aNbMoviesNotFound['NbMoviesNotFound'] != 0)
         {
             print("You have ".$aNbMoviesNotFound['NbMoviesNotFound']." movie(s) who doesn't match");
+        }
+        else
+        {
+            print('vide');
         }
         break;
 
