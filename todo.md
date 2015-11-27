@@ -1,12 +1,7 @@
 # Todo
-* Mettre liste déroulante pour les genres
-* Split du fichier function.inc.php
-    * search.inc.php
-    * scan.inc.php
-    * display.inc.php
 * Finir la correction manuelle des films (relance du scan)
-* Améliorer le parse des films
-* Si films toujours pas corriger, afficher dès l'ouverture du site la pop-up
+* PDO partout
+* Commentaire code
 * Documentation
 
 ## Peut être ajouté
