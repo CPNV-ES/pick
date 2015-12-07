@@ -1,13 +1,7 @@
 <?php
 
-// ----------------------------------
-// ExecuterRequetePreparee($connexion, $requete, $tab)
-// Date de création :
-// Date de révision :
-// Auteur : Quentin Girard & Lola Olivet & Théo Zimmermann & Stéphane Martignier
-// Entrée : la connexion à utiliser, la requete, les paramètres de la requete
-// Sortie : le retour de la requête
-// ----------------------------------
+// Prepare the execution of the MySQL request
+//-------------------------------------------
 function ExecutePreparedQuerie($oMyDB, $sQuerie, $tab)
 {
     $stmt = $oMyDB->prepare($sQuerie);
@@ -24,29 +18,29 @@ function ExecutePreparedQuerie($oMyDB, $sQuerie, $tab)
 }
 
 
-// ----------------------------------
-// ExecuterRequete($connexion, $requete, $typeRequete)
-// Date de création :
-// Date de révision :
-// Auteur : Quentin Girard & Lola Olivet & Théo Zimmermann & Stéphane Martignier
-// Entrée : la connexion à utiliser, la requete, le type de requête
-// Sortie : le retour de la requête
-// ----------------------------------
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+
+
+// Execute the MySQL request
+//--------------------------
 function ExecuteQuerie($oMyDB, $sQuerie, $typeQuerie)
 {
 
+	// Define type of MySQL request
+	//-----------------------------
     if ($typeQuerie == 'SELECT')
     {
-        // print($sQuerie);
-        $results = $oMyDB->query("$sQuerie"); //Exécution d'une requête SELECT
+    	// SELECT
+        $results = $oMyDB->query("$sQuerie");
     }
     else
     {
-        //print($sQuerie);
-        // print("<br/>");
-        $results = $oMyDB->exec("$sQuerie"); //Exécution d'une requête non SELECT
+    	// OTHER
+        $results = $oMyDB->exec("$sQuerie");
     }
+	////////////////////////////////
 
     return ($results);
 }
-?>

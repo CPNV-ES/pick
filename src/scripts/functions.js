@@ -8,12 +8,18 @@ $(document).ready(function()
 
     $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound", function(e)
     {
-        if (e != '')
+        if (e != 'vide')
         {
             $('#notfound').text(e);
             $('#correct_string').show();
         }
     });
+
+
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+
 
     // Get click and launch scan
     //--------------------------
@@ -58,21 +64,73 @@ $(document).ready(function()
     });
 
 
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+
+
+    //Get click and lauch correction of the not found movies
+    //------------------------------------------------------
+    $(document).on('click', '#correctmovie', function ()
+    {
+
+        // Hide modal form
+        //----------------
+        $('#modalplus').modal('hide');
+
+
+        // Display modal for scan in progress
+        //-----------------------------------
+        $('#overlay').modal(
+        {
+            show: true,
+            backdrop: 'static',
+            keyboard: false
+        });
+        $(".overlay-message").show();
+
+
+        // Call function to correct movies
+        //--------------------------------
+        $.post( "./src/includes/call_functions.php?todo=searchCorrectedMovie", $("#formCorrect").serialize(), function(e)
+        {
+
+            // Call function to display all movies
+            //----------------------------------
+            $('#list').load("./src/includes/call_functions.php?todo=getallmovies", function()
+            {
+
+                // Take off modal
+                //---------------
+                $('#overlay').modal('hide');
+                $(".overlay-message").hide();
+                $('#correct_string').show();
+
+
+                // Display number of movies not found if there is not found movies
+                //----------------------------------------------------------------
+                $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound", function(e)
+                {
+                    if (e != '')
+                    {
+                        $('#notfound').text(e);
+                        $('#correct_string').show();
+                    }
+                });
+            });
+        });
+        return false;
+    });
+
+
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+
     // Modal for correct wrong movies
     //-------------------------------
     $(document).on('click', '#modal', function()
     {
-
-
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
         $('#modalcontent').load("./src/includes/call_functions.php?todo=displaymodalcorrect", function()
         {
@@ -82,20 +140,15 @@ $(document).ready(function()
                 show: true,
                 keyboard: true
             });
-
-
         });
 
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // REFAIRE ICI C'EST DEGUEUUUUUUUUU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
+        return false
     });
+
+
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
 
 
     // Get detail from movies
@@ -114,39 +167,62 @@ $(document).ready(function()
     });
 
 
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------//
 
-    //Search by user
-    fieldTitle = "";
+    // Search by user
+    //---------------
+    fieldTitle  = "";
     fieldAuthor = "";
-    fieldGenre = "";
-    fieldYear = "";
+    fieldGenre  = "";
+    fieldYear   = "";
+    /////////////////
 
-    $(document).on('input', '#k', function ()
+
+    // Search by title
+    //----------------
+    $(document).on('input', '#t', function ()
     {
-       fieldTitle = $("#k").val();
-             $("#list").load("src/includes/call_functions.php?todo=searchMovies&queryT="+encodeURI(fieldTitle)+"&queryA="+encodeURI(fieldAuthor)+"&queryG="+encodeURI(fieldGenre)+"&queryY="+encodeURI(fieldYear));
+        fieldTitle = $("#t").val();
+        $("#list").load("src/includes/call_functions.php?todo=searchMovies&queryT="+encodeURI(fieldTitle)+"&queryA="+encodeURI(fieldAuthor)+"&queryG="+encodeURI(fieldGenre)+"&queryY="+encodeURI(fieldYear));
 
     });
+    ///////////////////////////////////////////////////
 
-     $(document).on('input', '#a', function ()
+
+    // Search by actors
+    //-----------------
+    $(document).on('input', '#a', function ()
     {
-      fieldAuthor = $("#a").val();
-              $("#list").load("src/includes/call_functions.php?todo=searchMovies&queryT="+encodeURI(fieldTitle)+"&queryA="+encodeURI(fieldAuthor)+"&queryG="+encodeURI(fieldGenre)+"&queryY="+encodeURI(fieldYear));
+        fieldAuthor = $("#a").val();
+        $("#list").load("src/includes/call_functions.php?todo=searchMovies&queryT="+encodeURI(fieldTitle)+"&queryA="+encodeURI(fieldAuthor)+"&queryG="+encodeURI(fieldGenre)+"&queryY="+encodeURI(fieldYear));
 
     });
+    ///////////////////////////////////////////////////
 
-     $(document).on('input', '#g', function ()
+
+    // Search by genre
+    //----------------
+    $(document).on('input', '#g', function ()
     {
-       fieldGenre = $("#g").val();
-              $("#list").load("src/includes/call_functions.php?todo=searchMovies&queryT="+encodeURI(fieldTitle)+"&queryA="+encodeURI(fieldAuthor)+"&queryG="+encodeURI(fieldGenre)+"&queryY="+encodeURI(fieldYear));
+        fieldGenre = $("#g").val();
+        $("#list").load("src/includes/call_functions.php?todo=searchMovies&queryT="+encodeURI(fieldTitle)+"&queryA="+encodeURI(fieldAuthor)+"&queryG="+encodeURI(fieldGenre)+"&queryY="+encodeURI(fieldYear));
 
     });
+    ///////////////////////////////////////////////////
 
-     $(document).on('input', '#y', function ()
+
+    // Search by years
+    //----------------
+    $(document).on('input', '#y', function ()
     {
-       fieldYear =$("#y").val();
-              $("#list").load("src/includes/call_functions.php?todo=searchMovies&queryT="+encodeURI(fieldTitle)+"&queryA="+encodeURI(fieldAuthor)+"&queryG="+encodeURI(fieldGenre)+"&queryY="+encodeURI(fieldYear));
+        fieldYear =$("#y").val();
+        $("#list").load("src/includes/call_functions.php?todo=searchMovies&queryT="+encodeURI(fieldTitle)+"&queryA="+encodeURI(fieldAuthor)+"&queryG="+encodeURI(fieldGenre)+"&queryY="+encodeURI(fieldYear));
 
     });
+    ///////////////////////////////////////////////////
+
+
 
 });

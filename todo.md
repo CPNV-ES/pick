@@ -1,8 +1,6 @@
 # Todo
-* Finir la correction manuelle des films (relance du scan)
-* PDO partout
-* Commentaire code
-* Documentation
+* Split encore le switch dans call_function
+* Rêgler les problèmes de refresh lors de la correction
 
 ## Peut être ajouté
 * Lecteur vidéo avec les balises vidéo par ex.

@@ -50,21 +50,20 @@
 .correct a{
 
     font-family:'Open Sans',sans-serif;
-
     color:#f3f3f3;
     text-decoration:none;
     text-transform: uppercase;
     font-size:15px;
-    padding:40px;
 
 }
 #correct_string{
-    position:absolute;
-    margin-left: 15%;
+    float:none;
+    margin-left:auto;
+    margin-right:auto;
     background-color:#F75961;
     text-align:center;
     height:40px;
-    width:33%;
+    width:45%;
     border-bottom-left-radius:10px;
     border-bottom-right-radius:10px;
     display:none;
@@ -223,8 +222,11 @@
 
 
 
-
-
+#list
+{
+    margin-left:50px;
+    margin-right:auto;
+}
 /* END TABLE STYLING*/
 
 
@@ -293,8 +295,8 @@
     background:none;
     border:0;
     font-size:45px;
-    
-    
+
+
 }
 /* IMAGE CAPTION STYLING */
 /* LOADING ANIMATION */
@@ -392,13 +394,14 @@
     }
 }
 
-@keyframes rota {
+@keyframes rota
+{
     100% {
         transform: rotate(360deg);
     }
 }
 
-}
+
 #overlay .modal{
     margin-top:40%;
 
@@ -437,3 +440,16 @@
 }
 
 /* END LOADING ANIMATION*/
+
+
+/*NOT FOUND*/
+#notfoundcontent
+{
+    font-size:40px;
+    color:#f3f3f3;
+    text-align:center;
+    padding:25px;
+    background-color:#88bbe6;
+    margin-right:12%;
+
+}

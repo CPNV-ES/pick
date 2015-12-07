@@ -30,8 +30,6 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
-		<!-- Est ce que ça marche ? -->
-
     </head>
     <body>
         <div id="overlay" class="modal fade in" style="margin-top:17%; margin-left:6%;">
@@ -50,7 +48,7 @@
         </div><!-- /.modal -->
 
 
-        <!-- MODAL POUR DESCRIPTION -->
+        <!-- MODAL FOR DESCRIPTION AND CORRECTION -->
         <div class="modal fade in" id="modalplus">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -69,69 +67,68 @@
                         <div class="form-group correct">
                             <p id="notfound" class="p.correct"></p>
                             <!-- BUTTON TRIGGER MODAL -->
-                            <a id="modal" href="#" class="tr animated bounceIn">CORRECT !</a></p>
-                    </div>
-                </div>
-            </div>
+                            <a id="modal" href="" class="tr animated bounceIn">CORRECT !</a></p>
+                    	</div>
+                	</div>
+           		</div>
 
 
             <!-- SCAN PART ------------------------------>
-            <div class="col-xs-3 col-lg-3 scan">
-                <a href="#" id="lScan" class="tr animated flipInX">SCAN</a>
+	            <div class="col-xs-3 col-lg-3 scan">
+	                <a href="#" id="lScan" class="tr animated flipInX">SCAN</a>
 
-            </div>
-            <div class="col-xs-3 col-centered">
-                <img src="./assets/img/logo.png" class="logo" alt="pick_logo" height="auto" width="220px">
-            </div>
-            <div id="" class="col-xs-6 col-centered baseline">
-                feelin' bored ?
-            </div>
+	            </div>
+	            <div class="col-xs-3 col-centered">
+	                <img src="./assets/img/logo.png" class="logo" alt="pick_logo" height="auto" width="220px">
+	            </div>
+	            <div id="" class="col-xs-6 col-centered baseline">
+	                feelin' bored ?
+	            </div>
 
-            <!-- SEARCH BAR TITLE-->
-            <div class="col-xs-6 col-centered">
-                <form class="form-inline global-search" role="form">
-                    <div class="form-group">
+	            <!-- SEARCH BAR TITLE-->
+	            <div class="col-xs-6 col-centered">
+	                <form class="form-inline global-search" role="form">
+	                    <div class="form-group">
 
-                        <label class="sr-only" for="">Enter any movie title..</label>
-                        <input type="search" class="form-control" id="k" name="k" placeholder="Enter any movie title..">
-                        <input id="cn" name="cn" type="hidden" value="false" />
-                        <input id="btn" name="cn" type="button" value="" />
-                    </div>
+	                        <label class="sr-only" for="">Enter any movie title..</label>
+	                        <input type="search" class="form-control" id="t" name="t" placeholder="Enter any movie title..">
+	                        <input id="cn" name="cn" type="hidden" value="false" />
+	                        <input id="btn" name="cn" type="button" value="" />
+	                    </div>
 
-                </form>
-            </div>
-            <!-- END - SEARCH BAR TITLE-->
-
-
-			<!-- SEARCH BAR HIDDEN-->
-            <div class="col-xs-6 col-centered" id="filter_menu">
-                <ul>
-                    <a href="#" id="y_link" class="trl"><li class="col-xs-4 animated slideInLeft tr">Year</li></a>
-                    <a href="#" id="g_link"  class="trl"><li class="col-xs-4 animated slideInUp tr">Genre</li></a>
-                    <a href="#" id="a_link"  class="trl"><li class="col-xs-4 animated slideInRight tr">Actors</li></a>
-                </ul>
-
-                <div class="col-centered">
-                    <form class="fplus"role="form">
-                        <div class="form-group">
-                            <input type="search" class="form-control" id="y" name="y" placeholder="By year">
-                            <span id="genre"></span>
-                            <!--<input type="search" class="form-control" id="g" name="g" placeholder="By genre">-->
-                            <input type="search" class="form-control" id="a" name="a" placeholder="By actors">
-                            <input id="cn" name="cn" type="hidden" value="false" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-			<!-- END - SEARCH BAR -->
+	                </form>
+	            </div>
+	            <!-- END - SEARCH BAR TITLE-->
 
 
-            <div class="col-xs-12 col-lg-12 col-centered" id="list">
-            </div>
+				<!-- SEARCH BAR HIDDEN-->
+	            <div class="col-xs-6 col-centered" id="filter_menu">
+	                <ul>
+	                    <a href="#" id="y_link" class="trl"><li class="col-xs-4 animated slideInLeft tr">Year</li></a>
+	                    <a href="#" id="g_link"  class="trl"><li class="col-xs-4 animated slideInUp tr">Genre</li></a>
+	                    <a href="#" id="a_link"  class="trl"><li class="col-xs-4 animated slideInRight tr">Actors</li></a>
+	                </ul>
+
+	                <div class="col-centered">
+	                    <form class="fplus"role="form">
+	                        <div class="form-group">
+	                            <input type="search" class="form-control" id="y" name="y" placeholder="By year">
+	                            <span id="genre"></span>
+	                            <!--<input type="search" class="form-control" id="g" name="g" placeholder="By genre">-->
+	                            <input type="search" class="form-control" id="a" name="a" placeholder="By actors">
+	                            <input id="cn" name="cn" type="hidden" value="false" />
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+				<!-- END - SEARCH BAR -->
+
+				<!-- DISPLAY MOVIE LIST -->
+	            <div class="col-xs-12 col-lg-12 col-centered" id="list">
+	            </div>
+	            <!-- END - DISPLAY MOVIE LIST -->
+
+	        </div>
         </div>
-        </div>
-    </div>
-
-
-</body>
+	</body>
 </html>
