@@ -126,18 +126,20 @@ function dirToArray($sDir)
                 preg_match('/^(\[.*\])?[_\.\s]?(([a-zA-Z0-9éèàë]{1,})([_\.\s\-]([A-Z]?([a-zéèàë&]{1,}|[IMVX]{1,})?|(?!(19|20|21)[0-9]{2})[0-9]{1,}|\%\![0-9]{1,}))*)([_\.\s]((\(?([0-9]){4}\)?|[A-Z]{4,}|(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})[\s-]*(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})?).*))?\.(avi|mp4|mov|mpg|mpa|wma)$/', utf8_encode($sValue), $matches);
 
 
-				// Si preg_match ne trouve rien
+				// If preg_match found nothink
 				//-----------------------------
 				if(!isset($matches[2]))
 				{
 
-					// REFAIRE REGEXP OU AUTRE MANIERE
+					// If regex doesn't match replace caracter
+					//----------------------------------------
 					$sValueParse = str_ireplace($aReplace2, " ", $sValue);
 				}
 				else
 				{
 
-					// RESULTAT DE JOHN
+					// Match of the regex
+					//-------------------
 					$sValueParse = $matches[2];
 				}
 
@@ -192,9 +194,7 @@ function SearchInMovieDB($aFile)
         //------------------------------------------------------
         if (count($aDataJsonMovie -> results) != 0)
         {
-
             InsertInDB($aDataJsonMovie -> results[0] -> id, $aFichier[1]);
-
         }
         else
         {
@@ -524,6 +524,7 @@ function InsertInDB($idMovie, $aFichier)
                 $oResponse = ExecuteQuerie($oMyDB, $sQuerie, 'SELECT');
                 $aDataMovieProducer = $oResponse -> fetch();
                 ////////////////////////////////////////////
+
 
                 // If producer is not referenced to the movie, add it
                 //---------------------------------------------------
