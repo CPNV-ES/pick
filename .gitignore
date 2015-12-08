@@ -1,7 +1,7 @@
 Video
 Video_light
 .idea
-config.php
+src/config/config.php
 reading.php
 test_recherche_disk.php
 Video_light
