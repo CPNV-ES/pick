@@ -69,8 +69,8 @@ $(document).ready(function()
 //-----------------------------------------------------------------------------------------------------------//
 
 
-    //Get click and lauch correction of the not found movies
-    //------------------------------------------------------
+    // Get click and lauch correction of the not found movies
+    //-------------------------------------------------------
     $(document).on('click', '#correctmovie', function ()
     {
 
@@ -94,6 +94,7 @@ $(document).ready(function()
         //--------------------------------
         $.post( "./src/includes/call_functions.php?todo=searchCorrectedMovie", $("#formCorrect").serialize(), function(e)
         {
+
 
             // Call function to display all movies
             //----------------------------------

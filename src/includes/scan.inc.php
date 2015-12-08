@@ -8,7 +8,19 @@ function dirToArray($sDir)
     //---------
     $aResult	= array();
     $aReturn	= array();
-    $aDir		= scandir($sDir);
+	////////////////////////////////////////////
+
+
+	// Check is_dir
+	//-------------
+	if(is_dir($sDir))
+	{
+		$aDir	= scandir($sDir);
+	}
+	else
+	{
+		die("<div id='notfoundcontent'>CHECK THE FILE PATH OF YOUR DIRECTORY IN <kbd>src/config/config.php</kbd></div>");
+	}
     ////////////////////////////////////////////
 
 
@@ -182,13 +194,16 @@ function SearchInMovieDB($aFile)
         //---------------------------------------------
         $aFichier = explode(";", $sFichier);
 
+
         // Try to find the film in themoviedb's DB
         //----------------------------------------
         $aDataText = file_get_contents("http://api.themoviedb.org/3/search/movie?api_key=" . THEDBMOVIEKEY . "&query=" . $aFichier[0]);
 
+
         // Return JSON. Must decode
         //-------------------------
         $aDataJsonMovie = json_decode($aDataText);
+
 
         // Check if the name of the file was found in themoviedb
         //------------------------------------------------------
