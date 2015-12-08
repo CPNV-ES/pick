@@ -2,20 +2,20 @@
 
 // MYSQL information
 //------------------
-define ('MYSQLHOST',	"IP/Name server");		// ServerName
-define ('MYSQLUSER',	"Username");			// UserName
-define ('MYSQLPWD',		"Password");				// UserPassword
-define ('DATABASE',		"name_database");		// DBName
+define ('MYSQLHOST',	"127.0.0.1");		// ServerName
+define ('MYSQLUSER',	"root");			// UserName
+define ('MYSQLPWD',		"");				// UserPassword
+define ('DATABASE',		"my_movies");		// DBName
 ////////////////////////////////////////
 
 
 // TheDBMovie CONST
 //-----------------
-define ('THEDBMOVIEKEY',	"API Key TheMovieDB");		// TheMovieDB api key
+define ('THEDBMOVIEKEY',	"db663b344723dd2d6781aed1e2f7764d");		// TheDBMovie api key
 ////////////////////////////////////////
 
 
 // User folder
 //-----------------
-define ('USERFOLDER',	"Path to the folder");				// User folder
+define ('USERFOLDER',	"/wamp/www/pick/Video");				// User folder
 ////////////////////////////////////////
