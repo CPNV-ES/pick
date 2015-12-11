@@ -11,7 +11,7 @@ define ('DATABASE',		"my_movies");		// DBName
 
 // TheDBMovie CONST
 //-----------------
-define ('THEDBMOVIEKEY',	"db663b344723dd2d6781aed1e2f7764d");		// TheDBMovie api key
+define ('THEDBMOVIEKEY',	"KEY FROM THEMOVIEDB");		// TheDBMovie api key
 ////////////////////////////////////////
 
 
