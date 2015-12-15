@@ -26,39 +26,61 @@ $(document).ready(function()
     $(document).on('click', '#lScan', function()
     {
 
-        // Display modal for scan in progress
-        //-----------------------------------
-        $('#overlay').modal({
-            show: true,
-            backdrop: 'static',
-            keyboard: false
-        });
-        $(".overlay-message").show();
-
-
-
-        // Call function to scan user's disk
-        //----------------------------------
-        $('#list').load("./src/includes/call_functions.php?todo=scan", function()
+        // Check if user have an internet connection
+        //------------------------------------------
+        $.post( "./src/includes/call_functions.php?todo=verifConnect", function(e)
         {
 
-            // Take off modal
-            //---------------
-            $('#overlay').modal('hide');
-            $(".overlay-message").hide();
-            $('#correct_string').show();
-
-
-            // Display number of movies not found if there is not found movies
-            //-----------------------------------
-            $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound", function(e)
+            // True
+            //-----
+            if (e)
             {
-                if (e != '')
+
+                // Display modal for scan in progress
+                //-----------------------------------
+                $('#overlay').modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $(".overlay-message").show();
+
+
+
+                // Call function to scan user's disk
+                //----------------------------------
+                $('#list').load("./src/includes/call_functions.php?todo=scan", function()
                 {
-                    $('#notfound').text(e);
+
+                    // Take off modal
+                    //---------------
+                    $('#overlay').modal('hide');
+                    $(".overlay-message").hide();
                     $('#correct_string').show();
-                }
-            });
+
+
+                    // Display number of movies not found if there is not found movies
+                    //-----------------------------------
+                    $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound", function(e)
+                    {
+                        if (e != '')
+                        {
+                            $('#notfound').text(e);
+                            $('#correct_string').show();
+                        }
+                    });
+
+
+                    // Get all genre for the search
+                    //-----------------------------
+                    $('#genre').load("./src/includes/call_functions.php?todo=getallgenres");
+
+                });
+            }
+            else
+            {
+                alert("Please, check your internet connection");
+            }
 
         });
     });
@@ -74,53 +96,69 @@ $(document).ready(function()
     $(document).on('click', '#correctmovie', function ()
     {
 
-        // Hide modal form
-        //----------------
-        $('#modalplus').modal('hide');
-
-
-        // Display modal for scan in progress
-        //-----------------------------------
-        $('#overlay').modal(
-        {
-            show: true,
-            backdrop: 'static',
-            keyboard: false
-        });
-        $(".overlay-message").show();
-
-
-        // Call function to correct movies
-        //--------------------------------
-        $.post( "./src/includes/call_functions.php?todo=searchCorrectedMovie", $("#formCorrect").serialize(), function(e)
+        // Check if user have an internet connection
+        //------------------------------------------
+        $.post( "./src/includes/call_functions.php?todo=verifConnect", function(e)
         {
 
-
-            // Call function to display all movies
-            //----------------------------------
-            $('#list').load("./src/includes/call_functions.php?todo=getallmovies", function()
+            // True
+            //-----
+            if (e)
             {
 
-                // Take off modal
-                //---------------
-                $('#overlay').modal('hide');
-                $(".overlay-message").hide();
-                $('#correct_string').show();
+                // Hide modal form
+                //----------------
+                $('#modalplus').modal('hide');
 
 
-                // Display number of movies not found if there is not found movies
-                //----------------------------------------------------------------
-                $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound", function(e)
+                // Display modal for scan in progress
+                //-----------------------------------
+                $('#overlay').modal(
                 {
-                    if (e != '')
-                    {
-                        $('#notfound').text(e);
-                        $('#correct_string').show();
-                    }
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false
                 });
-            });
-        });
-        return false;
+                $(".overlay-message").show();
+
+
+                // Call function to correct movies
+                //--------------------------------
+                $.post( "./src/includes/call_functions.php?todo=searchCorrectedMovie", $("#formCorrect").serialize(), function(e)
+                {
+
+                    // Call function to display all movies
+                    //----------------------------------
+                    $('#list').load("./src/includes/call_functions.php?todo=getallmovies", function()
+                    {
+
+                        // Take off modal
+                        //---------------
+                        $('#overlay').modal('hide');
+                        $(".overlay-message").hide();
+                        $('#correct_string').show();
+
+
+                        // Display number of movies not found if there is not found movies
+                        //----------------------------------------------------------------
+                        $('#notfound').load("./src/includes/call_functions.php?todo=moviesnotfound", function(e)
+                        {
+                            if (e != '')
+                            {
+                                $('#notfound').text(e);
+                                $('#correct_string').show();
+                            }
+                        });
+                    });
+                });
+
+             }
+             else
+             {
+                  alert("Please, check your internet connection");
+             }
+         });
+         return false;
     });
 
 

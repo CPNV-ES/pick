@@ -1,6 +1,10 @@
 <?php
-// Get all movies to display
-//--------------------------
+
+
+// ----------------------------------
+// GetAllMovies()
+// Description	: Get all movies and display it
+// ----------------------------------
 function GetAllMovies()
 {
 
@@ -33,7 +37,7 @@ function GetAllMovies()
 
 	// Select genre of the movie
 	//--------------------------
-    while($aMovies = $oResponse->fetch())
+    while ($aMovies = $oResponse->fetch())
 	{
 
 		// Set variable
@@ -58,7 +62,7 @@ function GetAllMovies()
 
     	// Add genre in tab
     	//-----------------
-    	while($aGenres = $oResponse2->fetch())
+    	while ($aGenres = $oResponse2->fetch())
 		{
 			$aGenre .= $aGenres['genre']." ";
 		}
@@ -112,13 +116,12 @@ function GetAllMovies()
 }
 
 
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
 
-
-// Get number of uncorrect movies to display to user
-//--------------------------------------------------
+// ----------------------------------
+// GetNumberUnCorrectMovie()
+// Description	: Get number of uncorrect
+//				movies to display to user
+// ----------------------------------
 function GetNumberUnCorrectMovie()
 {
 
@@ -142,7 +145,7 @@ function GetNumberUnCorrectMovie()
 
     // Display message
 	//----------------
-    if($aNbMoviesNotFound['NbMoviesNotFound'] != 0)
+    if ($aNbMoviesNotFound['NbMoviesNotFound'] != 0)
     {
         $sDisplay = "You have ".$aNbMoviesNotFound['NbMoviesNotFound']." movie(s) that don't match";
     }
@@ -156,13 +159,11 @@ function GetNumberUnCorrectMovie()
 }
 
 
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
 
-
-// Get all uncorrect movies
-//-------------------------
+// ----------------------------------
+// GetUnCorrectMovie()
+// Description	: Get all uncorrect movies
+// ----------------------------------
 function GetUnCorrectMovie()
 {
 
@@ -197,7 +198,7 @@ function GetUnCorrectMovie()
 
     // Insert information in table
     //----------------------------
-    while($row = $oResponse->fetch())
+    while ($row = $oResponse->fetch())
     {
         $aData = [];
 
@@ -214,7 +215,7 @@ function GetUnCorrectMovie()
 
 	// Display all input type text with source filename
 	//-------------------------------------------------
-    foreach($aResult as $sMovies)
+    foreach ($aResult as $sMovies)
     {
         $sDisplay .="<div class='form-group'><input type='text' class='form-control' placeholder='".$sMovies['filename_source']."' value='".$sMovies['filename_source']."' name='nameCorrect".$j."'></div>";
         $sDisplay .="<div class='form-group'><input type='hidden' class='form-control' value='".$sMovies['filename_source']."' name='nameFile".$j."'></div>";
@@ -241,13 +242,12 @@ function GetUnCorrectMovie()
 }
 
 
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
 
-
-// Get description of one movie
-//------------------------------
+// ----------------------------------
+// GetFilmDescription($idMovie)
+// Param		: $idMovie -> Movie's id
+// Description	: Get description of one movie
+// ----------------------------------
 function GetFilmDescription($idMovie)
 {
 
@@ -282,7 +282,7 @@ function GetFilmDescription($idMovie)
 
     // Get actors from the movie
     //--------------------------
-    while($row = $oResponse->fetch())
+    while ($sRow = $oResponse->fetch())
     {
         $aData = [];
         $sQuerie = 'SELECT
@@ -293,7 +293,7 @@ function GetFilmDescription($idMovie)
                INNER JOIN
                         movie_actors ON movie_actors.id_actor = actors.id_actor
                WHERE
-                        movie_actors.id_movie = '.$row['id_movie'].'
+                        movie_actors.id_movie = '.$sRow['id_movie'].'
                LIMIT 5';
 
         $oResponse2  = ExecuteQuerie($oMyDB, $sQuerie, 'SELECT');
@@ -302,12 +302,12 @@ function GetFilmDescription($idMovie)
 
         // Put actors information in table
         //--------------------------------
-        while($row2 = $oResponse2->fetch())
+        while ($sRow2 = $oResponse2->fetch())
         {
             $aData2 = [];
 
-            $aData2['name']            = $row2['name'];
-            $aData2['firstname']       = $row2['firstname'];
+            $aData2['name']            = $sRow2['name'];
+            $aData2['firstname']       = $sRow2['firstname'];
 
             $aResult2[$j] = $aData2;
 
@@ -319,12 +319,12 @@ function GetFilmDescription($idMovie)
 
         // Insert all informations about the movies in table
         //--------------------------------------------------
-        $aData['title']           = $row['original_title'];
-        $aData['release']         = $row['release_date'];
-        $aData['runtime']         = $row['runtime'];
-        $aData['synopsis']        = $row['synopsis'];
-        $aData['poster_path']     = "http://image.tmdb.org/t/p/w342".$row['poster_path'];
-        $aData['file_path']       = $row['file_path'];
+        $aData['title']           = $sRow['original_title'];
+        $aData['release']         = $sRow['release_date'];
+        $aData['runtime']         = $sRow['runtime'];
+        $aData['synopsis']        = $sRow['synopsis'];
+        $aData['poster_path']     = "http://image.tmdb.org/t/p/w342".$sRow['poster_path'];
+        $aData['file_path']       = $sRow['file_path'];
         $aData['actors']          = $aResult2;
 
         $aResult[$i] = $aData;
@@ -375,13 +375,12 @@ function GetFilmDescription($idMovie)
 }
 
 
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
 
-
-// Function call by search
-//------------------------
+// ----------------------------------
+// GetSomeMovies($aIdMovies)
+// Param		: $aIdMovies -> Array of movie's must be display
+// Description	: Get movie's in our DB and display it (called by GetSearchMovies(...))
+// ----------------------------------
 function GetSomeMovies($aIdMovies)
 {
 
@@ -404,14 +403,14 @@ function GetSomeMovies($aIdMovies)
 
 	// Check the value of $aIdMovies
 	//------------------------------
-    if(count($aIdMovies) != 0)
+    if (count($aIdMovies) != 0)
     {
 
 		// Get all ids of movie find by the search
 		//----------------------------------------
         foreach ($aIdMovies as $id)
         {
-            if($sFirstIteration)
+            if ($sFirstIteration)
             {
                 $sIds .= $id;
                 $sFirstIteration = false;
@@ -441,7 +440,7 @@ function GetSomeMovies($aIdMovies)
 
 		// Select genre of the movie
 		//--------------------------
-	    while($aMovies = $oResponse->fetch())
+	    while ($aMovies = $oResponse->fetch())
 		{
 
 			// Set variable
@@ -466,7 +465,7 @@ function GetSomeMovies($aIdMovies)
 
 	    	// Add genre in tab
 	    	//-----------------
-	    	while($aGenres = $oResponse2->fetch())
+	    	while ($aGenres = $oResponse2->fetch())
 			{
 				$aGenre .= $aGenres['genre']." ";
 			}
@@ -517,14 +516,15 @@ function GetSomeMovies($aIdMovies)
 }
 
 
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-
-
-// Function to search movies
-//--------------------------
-function GetSearchMovies($title, $actor, $genre, $year)
+// ----------------------------------
+// GetSearchMovies($sTitle, $sActor, $sGenre, $sYear)
+// Param		: $sTitle
+//				: $sActor
+//				: $sGenre
+//				: $sYear
+// Description	: try to match entry params with information in DB
+// ----------------------------------
+function GetSearchMovies($sTitle, $sActor, $sGenre, $sYear)
 {
 
     // Set variable
@@ -541,7 +541,7 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
     // Find by title
     //--------------
-    if(isset($title) && $title != "" && (!isset($actor) || $actor == "") && (!isset($genre) || $genre == "") && (!isset($year) || $year == ""))
+    if (isset($sTitle) && $sTitle != "" && (!isset($sActor) || $sActor == "") && (!isset($sGenre) || $sGenre == "") && (!isset($sYear) || $sYear == ""))
     {
         $sQueryM = "SELECT
                         id_movie
@@ -550,14 +550,14 @@ function GetSearchMovies($title, $actor, $genre, $year)
                     WHERE
                         title LIKE ?;";
 
-        $sTab = ['%'.$title.'%'];
+        $sTab = ['%'.$sTitle.'%'];
         $oResponseM = ExecutePreparedQuerie($oMyDB, $sQueryM, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseM->fetch())
+        while ($aDataM = $oResponseM->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -572,7 +572,7 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
     // Find by actors
     //---------------
-    else if(isset($actor) && $actor != "" && (!isset($title) || $title == "") && (!isset($genre) || $genre == "") && (!isset($year) || $year == ""))
+    else if (isset($sActor) && $sActor != "" && (!isset($sTitle) || $sTitle == "") && (!isset($sGenre) || $sGenre == "") && (!isset($sYear) || $sYear == ""))
     {
 
         $sQueryA = "
@@ -595,14 +595,14 @@ function GetSearchMovies($title, $actor, $genre, $year)
 											WHERE
 												name LIKE ? OR firstname LIKE ?));";
 
-        $sTab = [$actor.'%', $actor.'%'];
+        $sTab = [$sActor.'%', $sActor.'%'];
         $oResponseA = ExecutePreparedQuerie($oMyDB, $sQueryA, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseA->fetch())
+        while ($aDataM = $oResponseA->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -618,7 +618,7 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
     // Find by genre
     //--------------
-    else if(isset($genre) && $genre != "" && (!isset($title) || $title == "") && (!isset($actor) || $actor == "") && (!isset($year) || $year == ""))
+    else if (isset($sGenre) && $sGenre != "" && (!isset($sTitle) || $sTitle == "") && (!isset($sActor) || $sActor == "") && (!isset($sYear) || $sYear == ""))
     {
 
         $sQueryG = "SELECT
@@ -637,14 +637,14 @@ function GetSearchMovies($title, $actor, $genre, $year)
 														FROM
 															genres
 														WHERE genre LIKE ?));";
-        $sTab = [$genre.'%'];
+        $sTab = [$sGenre.'%'];
         $oResponseG = ExecutePreparedQuerie($oMyDB, $sQueryG, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseG->fetch())
+        while ($aDataM = $oResponseG->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -660,7 +660,7 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
     // Find by year
     //-------------
-    else if(isset($year) && $year != "" && (!isset($title) || $title == "") && (!isset($actor) || $actor == "") && (!isset($genre) || $genre == ""))
+    else if (isset($sYear) && $sYear != "" && (!isset($sTitle) || $sTitle == "") && (!isset($sActor) || $sActor == "") && (!isset($sGenre) || $sGenre == ""))
     {
         $sQueryY="SELECT
         			id_movie
@@ -668,14 +668,14 @@ function GetSearchMovies($title, $actor, $genre, $year)
         			movies
         		WHERE
         			release_date LIKE ?;";
-        $sTab = [$year.'%'];
+        $sTab = [$sYear.'%'];
         $oResponseY = ExecutePreparedQuerie($oMyDB, $sQueryY, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseY->fetch())
+        while ($aDataM = $oResponseY->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -691,11 +691,11 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by actors and title
 	//---------------------------
-    else if(isset($title) && $title != "" && isset($actor) && $actor != "" && (!isset($genre) || $genre == "") && (!isset($year) || $year == ""))
+    else if (isset($sTitle) && $sTitle != "" && isset($sActor) && $sActor != "" && (!isset($sGenre) || $sGenre == "") && (!isset($sYear) || $sYear == ""))
     {
         $sQueryTA = "SELECT id_movie FROM movies WHERE title LIKE ? AND id_movie IN (
 		SELECT id_movie FROM movie_actors WHERE id_actor IN (SELECT id_actor FROM actors WHERE name LIKE ? OR firstname LIKE ?));";
-        $sTab = ['%'.$title.'%', $actor.'%', $actor.'%'];
+        $sTab = ['%'.$sTitle.'%', $sActor.'%', $sActor.'%'];
         $oResponseTA = ExecutePreparedQuerie($oMyDB, $sQueryTA, $sTab);
 		//////////////////////////////////////////////////////////////
 
@@ -718,18 +718,18 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by actors and title
 	//---------------------------
-    else if(isset($title) && $title != "" && isset($genre) && $genre != "" && (!isset($actor) || $actor == "") && (!isset($year) || $year == ""))
+    else if (isset($sTitle) && $sTitle != "" && isset($sGenre) && $sGenre != "" && (!isset($sActor) || $sActor == "") && (!isset($sYear) || $sYear == ""))
     {
         $sQueryTG = "SELECT id_movie FROM movies WHERE title LIKE ? AND id_movie IN (
 		SELECT id_movie FROM movie_genres WHERE id_genre IN (SELECT id_genre FROM genres WHERE genre LIKE ?))";
-        $sTab = ['%'.$title.'%', $genre.'%'];
+        $sTab = ['%'.$sTitle.'%', $sGenre.'%'];
         $oResponseTG = ExecutePreparedQuerie($oMyDB, $sQueryTG, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseTG->fetch())
+        while ($aDataM = $oResponseTG->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -744,17 +744,17 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by years and title
 	//--------------------------
-    else if(isset($title) && $title != "" && isset($year) && $year != "" && (!isset($actor) || $actor == "") && (!isset($genre) || $genre == ""))
+    else if (isset($sTitle) && $sTitle != "" && isset($sYear) && $sYear != "" && (!isset($sActor) || $sActor == "") && (!isset($sGenre) || $sGenre == ""))
     {
         $sQueryTY = "SELECT id_movie FROM movies WHERE title LIKE ? AND release_date LIKE ?;";
-        $sTab = ['%'.$title.'%', $year.'%'];
+        $sTab = ['%'.$sTitle.'%', $sYear.'%'];
         $oResponseTY = ExecutePreparedQuerie($oMyDB, $sQueryTY, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseTY->fetch())
+        while ($aDataM = $oResponseTY->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -769,20 +769,20 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by actors and genre
 	//---------------------------
-    else if(isset($actor) && $actor != "" && isset($genre) && $genre != "" && (!isset($title) || $title == "") && (!isset($year) || $year == ""))
+    else if (isset($sActor) && $sActor != "" && isset($sGenre) && $sGenre != "" && (!isset($sTitle) || $sTitle == "") && (!isset($sYear) || $sYear == ""))
     {
         $sQueryAG = "SELECT id_movie FROM movies WHERE id_movie IN (
 		SELECT id_movie FROM movie_actors WHERE id_actor IN (SELECT id_actor FROM actors WHERE name LIKE ? OR firstname LIKE ?))
 		AND id_movie IN (
 		SELECT id_movie FROM movie_genres WHERE id_genre IN (SELECT id_genre FROM genres WHERE genre LIKE ?));";
-        $sTab = [$actor.'%', $actor.'%', $genre.'%'];
+        $sTab = [$sActor.'%', $sActor.'%', $sGenre.'%'];
         $oResponseAG = ExecutePreparedQuerie($oMyDB, $sQueryAG, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseAG->fetch())
+        while ($aDataM = $oResponseAG->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -797,19 +797,19 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by actors and years
 	//---------------------------
-    else if(isset($actor) && $actor != "" && isset($year) && $year != "" && (!isset($title) || $title == "") && (!isset($genre) || $genre == ""))
+    else if (isset($sActor) && $sActor != "" && isset($sYear) && $sYear != "" && (!isset($sTitle) || $sTitle == "") && (!isset($sGenre) || $sGenre == ""))
     {
         $sQueryAY = "SELECT id_movie FROM movies WHERE id_movie IN (
 		SELECT id_movie FROM movie_actors WHERE id_actor IN(SELECT id_actor FROM actors WHERE name LIKE ? OR firstname LIKE ?))
 		AND release_date LIKE ?;";
-        $sTab = [$actor.'%', $actor.'%', $year.'%'];
+        $sTab = [$sActor.'%', $sActor.'%', $sYear.'%'];
         $oResponseAY = ExecutePreparedQuerie($oMyDB, $sQueryAY, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// insert in array
 		//----------------
-        while($aDataM = $oResponseAY->fetch())
+        while ($aDataM = $oResponseAY->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -824,19 +824,19 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by genre and years
 	//--------------------------
-    else if(isset($genre) && $genre != "" && isset($year) && $year != "" && (!isset($title) || $title == "") && (!isset($actor) || $actor == ""))
+    else if (isset($sGenre) && $sGenre != "" && isset($sYear) && $sYear != "" && (!isset($sTitle) || $sTitle == "") && (!isset($sActor) || $sActor == ""))
     {
         $sQueryGY = "SELECT id_movie FROM movies WHERE id_movie IN (
 			SELECT id_movie FROM movie_genres WHERE id_genre IN (SELECT id_genre FROM genres WHERE genre LIKE ?))
 			AND release_date LIKE ?;";
-        $sTab = [$genre.'%', $year.'%'];
+        $sTab = [$sGenre.'%', $sYear.'%'];
         $oResponseGY = ExecutePreparedQuerie($oMyDB, $sQueryGY, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseGY->fetch())
+        while ($aDataM = $oResponseGY->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -851,21 +851,21 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by title, actors and genre
 	//----------------------------------
-    else if(isset($title) && $title != "" && isset($actor) && $actor != "" && isset($genre) && $genre != "" && (!isset($year) || $year == ""))
+    else if (isset($sTitle) && $sTitle != "" && isset($sActor) && $sActor != "" && isset($sGenre) && $sGenre != "" && (!isset($sYear) || $sYear == ""))
     {
         $sQueryATG = "SELECT id_movie FROM movies WHERE id_movie IN (
 			SELECT id_movie FROM movies WHERE title LIKE ?)
 			AND id_movie IN (SELECT id_movie FROM movie_actors WHERE id_actor IN (SELECT id_actor FROM actors WHERE name LIKE ? OR firstname LIKE ?))
 			AND id_movie IN (SELECT id_movie FROM movie_genres WHERE id_genre IN (SELECT id_genre FROM genres WHERE genre LIKE ?));";
 
-        $sTab = ['%'.$title.'%', $actor.'%', $actor.'%', $genre.'%'];
+        $sTab = ['%'.$sTitle.'%', $sActor.'%', $sActor.'%', $sGenre.'%'];
         $oResponseATG = ExecutePreparedQuerie($oMyDB, $sQueryATG, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseATG->fetch())
+        while ($aDataM = $oResponseATG->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -880,21 +880,21 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by title, actors and years
 	//----------------------------------
-    else if(isset($title) && $title != "" && isset($actor) && $actor != "" && isset($year) && $year != "" && (!isset($genre) || $genre == ""))
+    else if (isset($sTitle) && $sTitle != "" && isset($sActor) && $sActor != "" && isset($sYear) && $sYear != "" && (!isset($sGenre) || $sGenre == ""))
     {
         $sQueryATY = "SELECT id_movie FROM movies WHERE id_movie IN (
 			SELECT id_movie FROM movies WHERE title LIKE ?)
 			AND id_movie IN (SELECT id_movie FROM movie_actors WHERE id_actor IN (SELECT id_actor FROM actors WHERE name LIKE ? OR firstname LIKE ?))
 			AND release_date LIKE ?;";
 
-        $sTab = ['%'.$title.'%', $actor.'%', $actor.'%', $year.'%'];
+        $sTab = ['%'.$sTitle.'%', $sActor.'%', $sActor.'%', $sYear.'%'];
         $oResponseATY = ExecutePreparedQuerie($oMyDB, $sQueryATY, $sTab);
 		//////////////////////////////////////////////////////////////
 
 
 		// Insert in array
 		//----------------
-        while($aDataM = $oResponseATY->fetch())
+        while ($aDataM = $oResponseATY->fetch())
         {
             $aIdMovies[] = $aDataM['id_movie'];
         }
@@ -909,14 +909,14 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by actors, genre and years
 	//----------------------------------
-    else if(isset($actor) && $actor != "" && isset($genre) && $genre != "" && isset($year) && $year != "" && (!isset($title) || $title == ""))
+    else if (isset($sActor) && $sActor != "" && isset($sGenre) && $sGenre != "" && isset($sYear) && $sYear != "" && (!isset($sTitle) || $sTitle == ""))
     {
         $sQueryAGY = "SELECT id_movie FROM movies WHERE id_movie IN (
 			SELECT id_movie FROM movie_actors WHERE id_actor IN (SELECT id_actor FROM actors WHERE name LIKE ? OR firstname LIKE ?))
 			AND id_movie IN (SELECT id_movie FROM movie_genres WHERE id_genre IN (SELECT id_genre FROM genres WHERE genre LIKE ?))
 			AND release_date LIKE ?;";
 
-        $sTab = [$actor.'%', $actor.'%', $genre.'%', $year.'%'];
+        $sTab = [$sActor.'%', $sActor.'%', $sGenre.'%', $sYear.'%'];
         $oResponseAGY = ExecutePreparedQuerie($oMyDB, $sQueryAGY, $sTab);
 		//////////////////////////////////////////////////////////////
 
@@ -938,7 +938,7 @@ function GetSearchMovies($title, $actor, $genre, $year)
 
 	// Search by title, actors, genres and years
 	//------------------------------------------
-    else if(isset($title) && $title != "" && isset($actor) && $actor != "" && isset($genre) && $genre != "" && isset($year) && $year != "")
+    else if (isset($sTitle) && $sTitle != "" && isset($sActor) && $sActor != "" && isset($sGenre) && $sGenre != "" && isset($sYear) && $sYear != "")
     {
         $sQueryTAGY = "SELECT id_movie FROM movies WHERE id_movie IN (
 			SELECT id_movie FROM movies WHERE title LIKE ?)
@@ -946,7 +946,7 @@ function GetSearchMovies($title, $actor, $genre, $year)
 			AND id_movie IN (SELECT id_movie FROM movie_genres WHERE id_genre IN (SELECT id_genre FROM genres WHERE genre LIKE ?))
 			AND release_date LIKE ?;";
 
-        $sTab = ['%'.$title.'%' ,$actor.'%', $actor.'%', $genre.'%', $year.'%'];
+        $sTab = ['%'.$sTitle.'%' ,$sActor.'%', $sActor.'%', $sGenre.'%', $sYear.'%'];
         $oResponseTAGY = ExecutePreparedQuerie($oMyDB, $sQueryTAGY, $sTab);
 		//////////////////////////////////////////////////////////////
 
@@ -964,11 +964,12 @@ function GetSearchMovies($title, $actor, $genre, $year)
 }
 
 
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
 
-
+// ----------------------------------
+// GetAllGenres()
+// Description	: get all genre entry in our DB
+// 				and display it in a input select
+// ----------------------------------
 function GetAllGenres()
 {
 
@@ -1012,7 +1013,7 @@ function GetAllGenres()
 
 	// Display options
 	//----------------
-    foreach($aGenre AS $val)
+    foreach ($aGenre AS $val)
     {
         $sDisplay.= "<option value=".$val."/>";
     }

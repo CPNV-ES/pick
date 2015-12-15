@@ -1,15 +1,21 @@
 <?php
 
-// Prepare the execution of the MySQL request
-//-------------------------------------------
-function ExecutePreparedQuerie($oMyDB, $sQuerie, $tab)
+
+// ----------------------------------
+// ExecutePreparedQuerie($oMyDB, $sQuerie, $tab)
+// Param 		: $oMyDB 	-> PDO connection
+// 				: $sQuery 	-> sql request
+// 				: $sType 	-> INSERT, SELECT, UPDATE, etc...
+// Description : Execute a prepareRequest
+// ----------------------------------
+function ExecutePreparedQuerie($oMyDB, $sQuery, $sType)
 {
-    $stmt = $oMyDB->prepare($sQuerie);
+    $stmt = $oMyDB->prepare($sQuery);
 
     $i = 0;
-    while($i < count($tab))
+    while ($i < count($sType))
     {
-        $stmt->bindParam($i+1, $tab[$i]);
+        $stmt->bindParam($i+1, $sType[$i]);
         $i++;
     }
 
@@ -18,29 +24,29 @@ function ExecutePreparedQuerie($oMyDB, $sQuerie, $tab)
 }
 
 
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------//
-
-
-// Execute the MySQL request
-//--------------------------
-function ExecuteQuerie($oMyDB, $sQuerie, $typeQuerie)
+// ----------------------------------
+// ExecuteQuerie($oMyDB, $sQuerie, $tab)
+// Param 		: $oMyDB 	-> PDO connection
+//				: $sQuery 	-> sql request
+//				: $sType 	-> INSERT, SELECT, UPDATE, etc...
+// Description : Execute a request
+// ----------------------------------
+function ExecuteQuerie($oMyDB, $sQuery, $sType)
 {
 
 	// Define type of MySQL request
 	//-----------------------------
-    if ($typeQuerie == 'SELECT')
+    if ($sType == 'SELECT')
     {
     	// SELECT
-        $results = $oMyDB->query("$sQuerie");
+        $sResults = $oMyDB->query("$sQuery");
     }
     else
     {
     	// OTHER
-        $results = $oMyDB->exec("$sQuerie");
+        $sResults = $oMyDB->exec("$sQuery");
     }
 	////////////////////////////////
 
-    return ($results);
+    return ($sResults);
 }

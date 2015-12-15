@@ -23,7 +23,7 @@ switch($_GET['todo'])
 
 		// Call function
 		//--------------
-		$aMovieFromDisk = dirToArray(USERFOLDER);
+		$aMovieFromDisk = DirToArray(USERFOLDER);
 	    $aMovieNotFound = SearchInMovieDB($aMovieFromDisk);
         AddUnCorrectMovie($aMovieNotFound);
 		/////////////////////////////////////////////////////////////////
@@ -172,6 +172,14 @@ switch($_GET['todo'])
 
 
         break;
+
+
+	case 'verifConnect':
+
+		// Call function
+		print(CheckConnection());
+
+		break;
 }
 
 ?>
