@@ -2,20 +2,20 @@
 
 // MYSQL information
 //------------------
-define ('MYSQLHOST',	"IP_SERVER");		// ServerName
-define ('MYSQLUSER',	"USERNAME");			// UserName
-define ('MYSQLPWD',		"PASSWORD");				// UserPassword
+define ('MYSQLHOST',	"127.0.0.1");		// ServerName
+define ('MYSQLUSER',	"root");			// UserName
+define ('MYSQLPWD',		"");				// UserPassword
 define ('DATABASE',		"my_movies");		// DBName
 ////////////////////////////////////////
 
 
 // TheDBMovie CONST
 //-----------------
-define ('THEDBMOVIEKEY',	"KEY FROM THEMOVIEDB");		// TheDBMovie api key
+define ('THEDBMOVIEKEY',	"db663b344723dd2d6781aed1e2f7764d");		// TheDBMovie api key
 ////////////////////////////////////////
 
 
 // User folder
 //-----------------
-define ('USERFOLDER',	"FILE TO THE DIRECTORY WHO CONTAIN MOVIES");				// User folder
+define ('USERFOLDER',	"/xampp/htdocs/pick/Video");				// User folder
 ////////////////////////////////////////
