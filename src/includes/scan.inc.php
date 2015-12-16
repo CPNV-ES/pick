@@ -324,8 +324,16 @@ function InsertInDB($idMovie, $sFileName)
 
             // Split lastname and firstname
             //-----------------------------
-            $firstnameName = explode(" ", $credit -> name, strpos($credit -> name, " "));
+            $aNameActor = explode(" ", $credit -> name, strpos($credit -> name, " "));
 
+			if (count($aNameActor) > 2)
+			{
+				for($i = 1;$aNameActor <= count($aNameActor); $i++)
+				{
+					$aNameActor[1] = $aNameActor[1]." ".$aNameActor[$i];
+				}
+
+			}
 
             // Check in DB if actor is already in DB
             //--------------------------------------
@@ -334,9 +342,9 @@ function InsertInDB($idMovie, $sFileName)
 						FROM
 							actors
 						WHERE
-							name = "' . ((isset($firstnameName[1])) ? $firstnameName[1] : '') . '"
+							name = "' . ((isset($aNameActor[1])) ? $aNameActor[1] : '') . '"
 						AND
-							firstname = "' . $firstnameName[0] . '"';
+							firstname = "' . $aNameActor[0] . '"';
 
             $oResponse = ExecuteQuerie($oMyDB, $sQuery, 'SELECT');
             $aDataActor = $oResponse -> fetch();
@@ -355,8 +363,8 @@ function InsertInDB($idMovie, $sFileName)
                 $sQuery = 'INSERT INTO
 								actors
 							SET
-								name		= "' . ((isset($firstnameName[1])) ? $firstnameName[1] : '') . '",
-								firstname	= "' . $firstnameName[0] . '"';
+								name		= "' . ((isset($aNameActor[1])) ? $aNameActor[1] : '') . '",
+								firstname	= "' . $aNameActor[0] . '"';
 
                 ExecuteQuerie($oMyDB, $sQuery, 'INSERT');
                 ////////////////////////////////////////////
@@ -788,13 +796,15 @@ function AddUnCorrectMovie($aFileNotFound)
 // ----------------------------------
 function CheckConnection()
 {
-	$connected = @fsockopen("www.goggle.com", 80);
+	$bConnected = @fsockopen("www.goggle.com", 80);
 
-    if ($connected)
+    if ($bConnected)
     {
 
+		fclose($bConnected);
+
         return true;
-        fclose($connected);
+
     }
     else
     {
