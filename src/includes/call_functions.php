@@ -3,6 +3,7 @@
 // Include config and functions files
 //-----------------------------------
 include("../config/config.php");
+
 foreach(glob('./*.inc.php') as $fileName)
 {
     include_once $fileName;
@@ -24,9 +25,9 @@ switch($_GET['todo'])
 		// Call function
 		//--------------
 		$aMovieFromDisk = DirToArray(USERFOLDER);
-	    $aMovieNotFound = SearchInMovieDB($aMovieFromDisk);
-        AddUnCorrectMovie($aMovieNotFound);
-		/////////////////////////////////////////////////////////////////
+		$aMovieNotFound = SearchInMovieDB($aMovieFromDisk['final']);
+		AddUnCorrectMovie($aMovieNotFound);
+		/////////////////////////////////////////
 
 
         // Call function to get film and print it

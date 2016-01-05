@@ -1,5 +1,5 @@
 <?php
-set_time_limit(240);
+set_time_limit(500);
 
 // ----------------------------------
 // DirToArray($sDir)
@@ -7,13 +7,14 @@ set_time_limit(240);
 // Description	: Scan user directory,
 //				parse and try to clear filename
 // ----------------------------------
-function DirToArray($sDir)
+function DirToArray($sDir, $aFinal = [])
 {
 
     // Variable
     //---------
     $aResult	= [];
     $aReturn	= [];
+	$i = 0;
 	////////////////////////////////////////////
 
 
@@ -128,54 +129,66 @@ function DirToArray($sDir)
                 //--------------------------------------------------------
                 if (!preg_match_all("#(saison|season)#i", $sValue))
                 {
-                    $aResult[$sValue] = dirToArray($sDir . DIRECTORY_SEPARATOR . $sValue);
+                    $aResult = dirToArray($sDir . DIRECTORY_SEPARATOR . $sValue, $aFinal);
+
+					// Merge current array with the global array who containt all movies
+					//------------------------------------------------------------------
+					$aFinal = array_merge($aResult['return'], $aFinal);
                 }
 
             }
             else
             {
-                // Replace / in \ for Window path
-                //-------------------------------
-                $sOriginalPath = $sDir;
-                $sPath = str_replace("/", "\\", $sDir . DIRECTORY_SEPARATOR . $sValue);
-                $sPath = str_replace("\\\\", "\\", $sPath);
-				/////////////////////////////////
 
-                preg_match('/^(\[.*\])?[_\.\s]?(([a-zA-Z0-9éèàë]{1,})([_\.\s\-]([A-Z]?([a-zéèàë&]{1,}|[IMVX]{1,})?|(?!(19|20|21)[0-9]{2})[0-9]{1,}|\%\![0-9]{1,}))*)([_\.\s]((\(?([0-9]){4}\)?|[A-Z]{4,}|(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})[\s-]*(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})?).*))?\.(avi|mp4|mov|mpg|mpa|wma)$/', utf8_encode($sValue), $matches);
-
-
-				// If preg_match found nothink
-				//-----------------------------
-				if (!isset($matches[2]))
+				// Escape .jpg file
+				//-----------------
+            	if(strcasecmp(pathinfo($sValue, PATHINFO_EXTENSION), 'jpg'))
 				{
 
-					// If regex doesn't match replace caracter
-					//----------------------------------------
-					$sValueParse = str_ireplace($aReplace2, " ", $sValue);
+	                // Replace / in \ for Window path
+	                //-------------------------------
+	                $sOriginalPath = $sDir;
+	                $sPath = str_replace("/", "\\", $sDir . DIRECTORY_SEPARATOR . $sValue);
+	                $sPath = str_replace("\\\\", "\\", $sPath);
+					/////////////////////////////////
+
+	                preg_match('/^(\[.*\])?[_\.\s]?(([a-zA-Z0-9éèàë]{1,})([_\.\s\-]([A-Z]?([a-zéèàë&]{1,}|[IMVX]{1,})?|(?!(19|20|21)[0-9]{2})[0-9]{1,}|\%\![0-9]{1,}))*)([_\.\s]((\(?([0-9]){4}\)?|[A-Z]{4,}|(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})[\s-]*(([sSeE](aison|eason|pisode)?)[_\s]?[0-9]{1,})?).*))?\.(avi|mp4|mov|mpg|mpa|wma)$/', utf8_encode($sValue), $matches);
+
+
+					// If preg_match found nothink
+					//-----------------------------
+					if (!isset($matches[2]))
+					{
+
+						// If regex doesn't match replace caracter
+						//----------------------------------------
+						$sValueParse = str_ireplace($aReplace2, " ", $sValue);
+
+					}
+					else
+					{
+
+						// Match of the regex
+						//-------------------
+						$sValueParse = $matches[2];
+					}
+
+
+	                // Encode for correct visibility
+	                //------------------------------
+	                $sFichierTemp   = str_ireplace($aReplace, "+", utf8_encode($sValueParse));
+
+
+	                // Insert films with source name
+	                //------------------------------
+	                $aReturn[] .= $sFichierTemp.";".$sValue.";".$sOriginalPath;
+
 				}
-				else
-				{
-
-					// Match of the regex
-					//-------------------
-					$sValueParse = $matches[2];
-				}
-
-
-                // Encode for correct visibility
-                //------------------------------
-                $sFichierTemp   = str_ireplace($aReplace, "+", utf8_encode($sValueParse));
-
-
-                // Insert films with source name
-                //------------------------------
-                $aReturn[] .= $sFichierTemp.";".$sValue.";".$sOriginalPath;
-
             }
         }
     }
-    return $aReturn;
 
+     return array('return' => $aReturn, 'final' =>$aFinal);
 }
 
 
@@ -313,9 +326,7 @@ function InsertInDB($idMovie, $sFileName)
         ExecuteQuerie($oMyDB, $sQuery, 'INSERT');
         ////////////////////////////////////////////
 
-
-         $iMovie = $oMyDB -> lastInsertId();
-
+        $iMovie = $oMyDB -> lastInsertId();
 
         // Get actors info
         //----------------
@@ -326,6 +337,9 @@ function InsertInDB($idMovie, $sFileName)
             //-----------------------------
             $aNameActor = explode(" ", $credit -> name, strpos($credit -> name, " "));
 
+
+			// If actor have multiple name
+			//----------------------------
 			if (count($aNameActor) > 2)
 			{
 				for($i = 1;$aNameActor <= count($aNameActor); $i++)
@@ -335,6 +349,7 @@ function InsertInDB($idMovie, $sFileName)
 
 			}
 
+
             // Check in DB if actor is already in DB
             //--------------------------------------
             $sQuery = 'SELECT
@@ -342,9 +357,9 @@ function InsertInDB($idMovie, $sFileName)
 						FROM
 							actors
 						WHERE
-							name = "' . ((isset($aNameActor[1])) ? $aNameActor[1] : '') . '"
+							name = "' . ((isset($aNameActor[1])) ? str_replace("\"", "", $aNameActor[1]) : '') . '"
 						AND
-							firstname = "' . $aNameActor[0] . '"';
+							firstname = "' . str_replace("\"", "", $aNameActor[0]) . '"';
 
             $oResponse = ExecuteQuerie($oMyDB, $sQuery, 'SELECT');
             $aDataActor = $oResponse -> fetch();
@@ -363,8 +378,8 @@ function InsertInDB($idMovie, $sFileName)
                 $sQuery = 'INSERT INTO
 								actors
 							SET
-								name		= "' . ((isset($aNameActor[1])) ? $aNameActor[1] : '') . '",
-								firstname	= "' . $aNameActor[0] . '"';
+								name		= "' . ((isset($aNameActor[1])) ? str_replace("\"", "", $aNameActor[1]) : '') . '",
+								firstname	= "' . str_replace("\"", "", $aNameActor[0]) . '"';
 
                 ExecuteQuerie($oMyDB, $sQuery, 'INSERT');
                 ////////////////////////////////////////////
@@ -511,7 +526,7 @@ function InsertInDB($idMovie, $sFileName)
 							FROM
 								producers
 							WHERE
-								name 		= "' . $aFirstName[1] . '"
+								name 		= "' . ((isset($aFirstName[1])) ? htmlentities($aFirstName[1]) : '') . '"
 							AND
 								firstname 	= "' . $aFirstName[0] . '"';
 
@@ -531,7 +546,7 @@ function InsertInDB($idMovie, $sFileName)
                     $sQuery = 'INSERT INTO
 									producers
 								SET
-									name		= "' . $aFirstName[1] . '",
+									name		= "' . ((isset($aFirstName[1])) ? htmlentities($aFirstName[1]) : '') . '",
 									firstname	= "' . $aFirstName[0] . '"';
 
                     ExecuteQuerie($oMyDB, $sQuery, 'INSERT');
@@ -596,7 +611,7 @@ function InsertInDB($idMovie, $sFileName)
                             FROM
                                 directors
                             WHERE
-                                name = "' . $aFirstName[1] . '"
+                                name = "' . ((isset($aFirstName[1])) ? htmlentities($aFirstName[1]) : '') . '"
                             AND
                                 firstname = "' . $aFirstName[0] . '"';
 
@@ -616,7 +631,7 @@ function InsertInDB($idMovie, $sFileName)
                     $sQuery = 'INSERT INTO
                                     directors
                                 SET
-                                    name		= "' . $aFirstName[1] . '",
+                                    name		= "' . ((isset($aFirstName[1])) ? htmlentities($aFirstName[1]) : '') . '",
                                     firstname	= "' . $aFirstName[0] . '"';
 
                     ExecuteQuerie($oMyDB, $sQuery, 'INSERT');
