@@ -188,7 +188,8 @@ function GetUnCorrectMovie()
     $sQuery 	= " SELECT
     				id_correct,
 					filename_correct,
-					filename_source
+					filename_source,
+					file_path
 				FROM
 					corrects";
 
@@ -205,6 +206,7 @@ function GetUnCorrectMovie()
 		$aData['id_correct']		= $row['id_correct'];
         $aData['filename_correct'] 	= $row['filename_correct'];
 		$aData['filename_source']	= $row['filename_source'];
+		$aData['filename_path']		= $row['file_path'];
         $aResult[$i] = $aData;
 
         $i ++;
@@ -220,6 +222,7 @@ function GetUnCorrectMovie()
         $sDisplay .="<div class='form-group'><input type='text' class='form-control' placeholder='".$sMovies['filename_source']."' value='".$sMovies['filename_source']."' name='nameCorrect".$j."'></div>";
         $sDisplay .="<div class='form-group'><input type='hidden' class='form-control' value='".$sMovies['filename_source']."' name='nameFile".$j."'></div>";
         $sDisplay .="<div class='form-group'><input type='hidden' class='form-control' value='".$sMovies['id_correct']."' name='id".$j."'></div>";
+		$sDisplay .="<div class='form-group'><input type='hidden' class='form-control' value='".$sMovies['filename_path']."' name='pathFile".$j."'></div>";
         $j++;
     }
 	/////////////////////////////////////////////////////////////////
@@ -323,10 +326,16 @@ function GetFilmDescription($idMovie)
         $aData['release']         = $sRow['release_date'];
         $aData['runtime']         = $sRow['runtime'];
         $aData['synopsis']        = $sRow['synopsis'];
-        $aData['poster_path']     = "http://image.tmdb.org/t/p/w342".$sRow['poster_path'];
+        $aData['poster_path']     = (!empty($sRow['poster_path']) ? "http://image.tmdb.org/t/p/w342".$sRow['poster_path'] : "");
         $aData['file_path']       = $sRow['file_path'];
-        $aData['actors']          = $aResult2;
-
+		
+		// Check if movies has actors
+		//---------------------------
+		if(isset($aResult2))
+		{
+			$aData['actors']          = $aResult2;
+		}
+        
         $aResult[$i] = $aData;
         $i ++;
         //////////////////////////////////////////////////////////////
@@ -337,10 +346,20 @@ function GetFilmDescription($idMovie)
 	// Display the description
 	//------------------------
     $sDisplay ="
-                <h1>".$aResult[0]['title']."</h1>
-                <div class='col-md-8'>
-		            <img src='".$aResult[0]['poster_path']."' />
-		        </div>
+                <h1>".$aResult[0]['title']."</h1>";
+                
+				
+				// Check if we have poster_path
+				//-----------------------------
+				if($aResult[0]['poster_path'] != "")
+				{
+					$sDisplay .= "<div class='col-md-8'>
+		            	<img src='".$aResult[0]['poster_path']."' />
+		        	</div>";
+				}
+				//////////////////////////////////////////////////////////////
+				
+	$sDisplay .= "
 		            <div class='col-md-3'>
               			<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> ".date("d.m.Y", strtotime($aResult[0]['release']))." <br />
                			<span class='glyphicon glyphicon-time' aria-hidden='true'></span> ".$aResult[0]['runtime']." min <br />
@@ -349,13 +368,20 @@ function GetFilmDescription($idMovie)
     ";
 	/////////////////////////////////////////////////////////////////
 
-
+	
 	// Display actors
 	//---------------
-   	foreach ($aResult[0]['actors'] as $aActor)
-   	{
-          $sDisplay .= $aActor['firstname']." ".$aActor['name']."<br/>";
-   	}
+	if(isset($aResult[0]['actors']))
+	{
+		foreach ($aResult[0]['actors'] as $aActor)
+	   	{
+	          $sDisplay .= $aActor['firstname']." ".$aActor['name']."<br/>";
+	   	}
+	}
+	else
+	{
+		$sDisplay .= "Not found";
+	}
 	/////////////////////////////////////////////////////////////////
 
 

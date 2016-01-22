@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 // Include config and functions files
 //-----------------------------------
 include("../config/config.php");
